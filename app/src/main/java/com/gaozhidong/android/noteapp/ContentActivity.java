@@ -1,5 +1,9 @@
 package com.gaozhidong.android.noteapp;
 
+import android.app.AlarmManager;
+import android.app.DatePickerDialog;
+import android.app.PendingIntent;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -18,7 +22,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
+
+import java.util.Calendar;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -32,6 +40,7 @@ public class ContentActivity extends AppCompatActivity {
      */
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
+    private AlarmManager mAlarmManager;
 
     /**
      * The {@link ViewPager} that will host the section contents.
@@ -56,6 +65,7 @@ public class ContentActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +96,45 @@ public class ContentActivity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.set_time) {
 
+            FragmentManager fm = getSupportFragmentManager();
+            AlarmDialogFragment fragment = new AlarmDialogFragment();
+            fragment.show(fm,"chooseAlarm");
+            /*Calendar calendar = Calendar.getInstance();
+            int hour = calendar.get(Calendar.HOUR_OF_DAY);
+            int minute = calendar.get(Calendar.MINUTE);
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int chooseY, int chooseM, int chooseD) {
+                    //设置年月日
+                    Calendar calout = Calendar.getInstance();
+                    calout.set(Calendar.YEAR,chooseY);
+                    calout.set(Calendar.MONTH,chooseM);
+                    calout.set(Calendar.DAY_OF_MONTH,chooseD);
+                }
+            },year,month,day);
+
+
+            TimePickerDialog timePickerDialog = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
+                @Override
+                public void onTimeSet(TimePicker timePicker, int chooseH, int chooseM) {
+                    //这里的chooseH和chooseM就是选中的小时和分钟
+                    Calendar cal = Calendar.getInstance();
+                    cal.set(Calendar.HOUR_OF_DAY,chooseH);
+                    cal.set(Calendar.MINUTE,chooseM);
+                    //时间到就发送广播
+                    Intent intent = new Intent();
+                    intent.setAction("com.gaozhidong.android.RING");
+                    //将来时态的转跳
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(ContentActivity.this,0,intent,0);
+                    //设置闹钟
+                    mAlarmManager.set(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),pendingIntent);
+                }
+            },hour,minute,true);
+            timePickerDialog.show();*/
             return true;
         }
 
