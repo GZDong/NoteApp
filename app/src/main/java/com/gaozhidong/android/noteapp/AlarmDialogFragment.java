@@ -94,7 +94,7 @@ public class AlarmDialogFragment extends DialogFragment {
                         //将来时态的转跳
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,0);
                         //设置闹钟
-                        mAlarmManager.set(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),pendingIntent);
+                        mAlarmManager.setExact(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),pendingIntent);
                     }
                 },hour,minute,true);
                 timePickerDialog.show();

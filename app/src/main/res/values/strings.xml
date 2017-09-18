@@ -19,7 +19,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">定时提醒</string>
-
+    <string name="action_search">  搜索</string>
     <string name="testName">高志栋</string>
     <string name="testEmail">dong_scau@163.com</string>
     <string name="title_activity_content">便签详情</string>

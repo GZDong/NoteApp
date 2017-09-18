@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:allowBackup="true"
@@ -33,6 +34,12 @@
             android:label="@string/title_activity_content"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.gaozhidong.android.RING" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
