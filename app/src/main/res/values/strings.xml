@@ -2,9 +2,9 @@
     <string name="app_name">NoteApp</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
+    <string name="prompt_email">账号</string>
+    <string name="prompt_password">密码</string>
+    <string name="action_sign_in">登录或者注册</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -13,4 +13,15 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="title_activity_note_list">便签列表</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">定时提醒</string>
+
+    <string name="testName">高志栋</string>
+    <string name="testEmail">dong_scau@163.com</string>
+    <string name="title_activity_content">便签详情</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>
