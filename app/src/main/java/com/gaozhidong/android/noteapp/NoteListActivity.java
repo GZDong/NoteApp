@@ -112,8 +112,12 @@ public class NoteListActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.item_sort) {
             return true;
+        }
+        if (id == R.id.item_search){
+            Intent intent = new Intent(NoteListActivity.this,SortActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

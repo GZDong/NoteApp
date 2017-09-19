@@ -2,13 +2,14 @@ package com.gaozhidong.android.noteapp.Model;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
 import java.util.Calendar;
 
 /**
  * Created by zhidong on 2017/9/19.
  */
 
-public class NoteBody extends DataSupport {
+public class NoteBody extends DataSupport implements Serializable{
     private int mNoteId;
     private String mText;
     private String mTime;
