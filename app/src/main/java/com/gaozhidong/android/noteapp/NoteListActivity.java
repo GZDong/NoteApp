@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,8 +18,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.gaozhidong.android.noteapp.Adapter.NoteAdaper;
+import com.gaozhidong.android.noteapp.Model.NoteBody;
+import com.gaozhidong.android.noteapp.Model.NotesLab;
+
+import java.util.List;
+
 public class NoteListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private RecyclerView mRecyclerView;
+    private NoteAdaper mNoteAdaper;
+    private List<NoteBody> mBodyList;
 
     public static Intent newInstance(Context context){
         return new Intent(context,NoteListActivity.class);
@@ -26,8 +38,17 @@ public class NoteListActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_list);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mBodyList = NotesLab.get(this).getBodyList();
+        mRecyclerView = (RecyclerView) findViewById(R.id.note_recycler_view);
+        mNoteAdaper = new NoteAdaper(this,mBodyList);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(lm);
+        mRecyclerView.setAdapter(mNoteAdaper);
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

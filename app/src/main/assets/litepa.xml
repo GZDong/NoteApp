@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<litepal>
+    <dbname value = "noteDB"></dbname>
+    <version value = "1"></version>
+    <list>
+        <mapping class = "com.gaozhidong.android.noteapp.Model.NoteBody"></mapping>
+    </list>
+</litepal>

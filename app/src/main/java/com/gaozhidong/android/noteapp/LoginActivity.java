@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import org.litepal.tablemanager.Connector;
+
 public class LoginActivity extends AppCompatActivity{
 
     private Button mSignBtn;
@@ -13,6 +15,7 @@ public class LoginActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //Connector.getDatabase();
         initView();
         initAction();
     }

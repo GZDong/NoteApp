@@ -20,7 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("com.gaozhidong.android.RING")){
-            Log.e(TAG, "onReceive: !!!!!!");
+            Log.e(TAG, "onReceive: !!!!!!" + System.currentTimeMillis());
             Intent intent2 = new Intent(context,ContentActivity.class);
             PendingIntent pi = PendingIntent.getActivity(context,0,intent2,0);
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

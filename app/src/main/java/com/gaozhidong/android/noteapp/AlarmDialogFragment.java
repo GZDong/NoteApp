@@ -38,7 +38,7 @@ public class AlarmDialogFragment extends DialogFragment {
     private int month;
     private int day;
 
-    private AlarmManager mAlarmManager;
+    //private AlarmManager mAlarmManager;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class AlarmDialogFragment extends DialogFragment {
         mModifyYMDBtn = (Button) view.findViewById(R.id.modifyYMD);
         mModifyHMBtn = (Button) view.findViewById(R.id.modifyHM);
 
-        mAlarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+        //mAlarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         Calendar calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
@@ -88,13 +88,12 @@ public class AlarmDialogFragment extends DialogFragment {
                         Calendar cal = Calendar.getInstance();
                         cal.set(Calendar.HOUR_OF_DAY,chooseH);
                         cal.set(Calendar.MINUTE,chooseM);
-                        //时间到就发送广播
-                        Intent intent = new Intent();
-                        intent.setAction("com.gaozhidong.android.RING");
-                        //将来时态的转跳
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,0);
-                        //设置闹钟
-                        mAlarmManager.setExact(AlarmManager.RTC_WAKEUP,cal.getTimeInMillis(),pendingIntent);
+                        //选择指定时间后开启服务，让服务来设定闹钟，让闹钟到时发送广播
+                        Intent intent = new Intent(getActivity(),AlarmService.class);
+                        intent.putExtra("calendar",cal);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startService(intent);
+
                     }
                 },hour,minute,true);
                 timePickerDialog.show();
