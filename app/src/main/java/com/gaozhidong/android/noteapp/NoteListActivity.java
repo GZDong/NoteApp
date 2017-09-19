@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,8 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.gaozhidong.android.noteapp.Adapter.NoteAdaper;
+import com.gaozhidong.android.noteapp.Listener.ItemTouchCallback;
+import com.gaozhidong.android.noteapp.Listener.OnRecyclerItemClickListener;
 import com.gaozhidong.android.noteapp.Model.NoteBody;
 import com.gaozhidong.android.noteapp.Model.NotesLab;
 
@@ -49,6 +53,20 @@ public class NoteListActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(lm);
         mRecyclerView.setAdapter(mNoteAdaper);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
+            @Override
+            public void onItemClick(RecyclerView.ViewHolder viewHolder) {
+                Intent intent = ContentActivity.newInstance(NoteListActivity.this);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onLongClick(RecyclerView.ViewHolder viewHolder) {
+
+            }
+        });
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchCallback(mNoteAdaper));
+        itemTouchHelper.attachToRecyclerView(mRecyclerView);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

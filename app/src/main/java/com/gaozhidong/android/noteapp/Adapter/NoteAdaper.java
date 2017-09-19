@@ -48,6 +48,9 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
         this.mList = list;
         notifyDataSetChanged();
     }
+    public List<NoteBody> getDataList(){
+        return mList;
+    }
 
     public class NoteViewHodler extends RecyclerView.ViewHolder{
         private TextView textBody;
