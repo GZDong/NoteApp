@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".LoginActivity"
-            android:label="@string/app_name">
+            android:label="@string/activity_sign">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -51,7 +51,13 @@
             android:process="system">
         </service>
 
-        <activity android:name=".SortActivity">
+        <activity android:name=".SortActivity"
+            android:label="@string/activity_label"
+            android:parentActivityName=".NoteListActivity">
+        </activity>
+        <activity android:name=".RegisterActivity"
+            android:label="@string/action_register"
+            android:parentActivityName=".LoginActivity">
         </activity>
     </application>
 
