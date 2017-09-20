@@ -72,4 +72,8 @@ public class NoteBody extends DataSupport implements Serializable{
     public String getAccount() {
         return mAccount;
     }
+
+    public String getPhotoFilename(){
+        return "IMG_" + getNoteId() + ".jpg";
+    }
 }

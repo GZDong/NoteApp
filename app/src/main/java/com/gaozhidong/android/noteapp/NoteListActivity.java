@@ -53,18 +53,17 @@ public class NoteListActivity extends AppCompatActivity
         mRecyclerView.setLayoutManager(lm);
         mRecyclerView.setAdapter(mNoteAdaper);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
+        /*mRecyclerView.addOnItemTouchListener(new OnRecyclerItemClickListener(mRecyclerView) {
             @Override
             public void onItemClick(RecyclerView.ViewHolder viewHolder) {
-                Intent intent = ContentActivity.newInstance(NoteListActivity.this);
-                startActivity(intent);
+
             }
 
             @Override
             public void onLongClick(RecyclerView.ViewHolder viewHolder) {
 
             }
-        });
+        });*/
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchCallback(mNoteAdaper));
         itemTouchHelper.attachToRecyclerView(mRecyclerView);
 

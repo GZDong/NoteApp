@@ -1,14 +1,18 @@
 package com.gaozhidong.android.noteapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.gaozhidong.android.noteapp.ContentActivity;
 import com.gaozhidong.android.noteapp.Model.NoteBody;
+import com.gaozhidong.android.noteapp.NoteListActivity;
 import com.gaozhidong.android.noteapp.R;
+import com.gaozhidong.android.noteapp.Util.LogUtil;
 
 import java.util.List;
 
@@ -37,6 +41,7 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
         NoteBody noteBody = mList.get(position);
         viewHodler.textBody.setText(noteBody.getText());
         viewHodler.timeBody.setText(noteBody.getTime());
+        viewHodler.setNoteId(noteBody.getNoteId());
     }
 
     @Override
@@ -55,11 +60,28 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
     public class NoteViewHodler extends RecyclerView.ViewHolder{
         private TextView textBody;
         private TextView timeBody;
+        private int noteId;
 
         public NoteViewHodler(View view){
             super(view);
             textBody = (TextView) view.findViewById(R.id.text_body);
             timeBody = (TextView) view.findViewById(R.id.text_time);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = ContentActivity.newInstance(mContext);
+                    LogUtil.e("test","put " + noteId);
+                    intent.putExtra("noteId",noteId);
+                    mContext.startActivity(intent);
+                }
+            });
+        }
+        public void setNoteId(int id) {
+            noteId = id;
+        }
+
+        public int getNoteId() {
+            return noteId;
         }
     }
 }
