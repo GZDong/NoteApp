@@ -2,6 +2,7 @@ package com.gaozhidong.android.noteapp.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,7 +73,8 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
                     Intent intent = ContentActivity.newInstance(mContext);
                     LogUtil.e("test","put " + noteId);
                     intent.putExtra("noteId",noteId);
-                    mContext.startActivity(intent);
+                    NoteListActivity noteListActivity = (NoteListActivity) mContext;
+                    noteListActivity.startActivityForResult(intent,1);
                 }
             });
         }

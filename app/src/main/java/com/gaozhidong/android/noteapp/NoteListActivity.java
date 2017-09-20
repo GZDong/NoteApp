@@ -25,7 +25,9 @@ import com.gaozhidong.android.noteapp.Listener.ItemTouchCallback;
 import com.gaozhidong.android.noteapp.Listener.OnRecyclerItemClickListener;
 import com.gaozhidong.android.noteapp.Model.NoteBody;
 import com.gaozhidong.android.noteapp.Model.NotesLab;
+import com.gaozhidong.android.noteapp.Util.DateUtils;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class NoteListActivity extends AppCompatActivity
@@ -71,7 +73,20 @@ public class NoteListActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int noteid = mBodyList.size() + 1;
+                NoteBody noteBody = NoteBody.Builder()
+                        .setNoteId(noteid)
+                        .setText("")
+                        .setTime(DateUtils.getNowStrDate())
+                        .setAccount("gaozhidong")
+                        .setCalendar(Calendar.getInstance())
+                        .create();
+                NotesLab.get(NoteListActivity.this).addNote(noteBody);
+
+                mNoteAdaper.notifyDataSetChanged();
+
                 Intent intent = ContentActivity.newInstance(NoteListActivity.this);
+                intent.putExtra("noteId",noteid);
                 startActivity(intent);
             }
         });
@@ -145,5 +160,17 @@ public class NoteListActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case 1:
+                if (resultCode == 1){
+                    mNoteAdaper.notifyDataSetChanged();
+                }
+                break;
+            default:
+        }
     }
 }

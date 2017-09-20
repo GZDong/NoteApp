@@ -23,6 +23,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +39,7 @@ import android.widget.TimePicker;
 
 import com.gaozhidong.android.noteapp.Model.NoteBody;
 import com.gaozhidong.android.noteapp.Model.NotesLab;
+import com.gaozhidong.android.noteapp.Util.DateUtils;
 import com.gaozhidong.android.noteapp.Util.ImgUtils;
 import com.gaozhidong.android.noteapp.Util.LogUtil;
 
@@ -124,6 +127,8 @@ public class ContentActivity extends AppCompatActivity {
             return true;
         }
         if (id == android.R.id.home){
+            Intent intent = new Intent();
+            setResult(1,intent);
             finish();
         }
 
@@ -142,6 +147,9 @@ public class ContentActivity extends AppCompatActivity {
         private File mPhotoFile;
         private FloatingActionButton fab;
         private ImageView mImageView;
+        private TextView textTime;
+        private EditText text;
+        private String oldString;
 
         public PlaceholderFragment() {
         }
@@ -169,13 +177,13 @@ public class ContentActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_content, container, false);
-            TextView textTime = (TextView) rootView.findViewById(R.id.text_title);
-            EditText text = (EditText) rootView.findViewById(R.id.input_text);
+            textTime = (TextView) rootView.findViewById(R.id.text_title);
+            text = (EditText) rootView.findViewById(R.id.input_text);
             mImageView = (ImageView ) rootView.findViewById(R.id.img_view);
             textTime.setText(mNoteBody.getTime());
             text.setText(mNoteBody.getText());
             text.setSelection(text.getText().length());
-
+            oldString = mNoteBody.getText();
             fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
 
 
@@ -187,10 +195,30 @@ public class ContentActivity extends AppCompatActivity {
                 imgIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
             }
 
+
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivityForResult(imgIntent,REQUEST_PHOTO);
+                }
+            });
+
+            text.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    if (!charSequence.toString().equals(oldString)) {
+                        NotesLab.get(getActivity()).updateNote(mNoteBody.getNoteId(),charSequence.toString(), DateUtils.getNowStrDate());
+                    }
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
                 }
             });
 

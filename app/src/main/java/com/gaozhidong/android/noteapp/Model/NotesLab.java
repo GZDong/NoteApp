@@ -3,6 +3,8 @@ package com.gaozhidong.android.noteapp.Model;
 import android.content.Context;
 import android.os.Environment;
 
+import com.gaozhidong.android.noteapp.ServiceResultEntity.LoginResult;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -40,7 +42,7 @@ public class NotesLab {
             NoteBody noteBody = NoteBody.Builder()
                     .setNoteId(1)
                     .setAccount("gaozhidong")
-                    .setTime("2017-5-3 13:14")
+                    .setTime("2017年5月3日 13:14")
                     .setCalendar(Calendar.getInstance())
                     .setText("testtest")
                     .create();
@@ -49,7 +51,7 @@ public class NotesLab {
         NoteBody noteBody2 = NoteBody.Builder()
                 .setNoteId(2)
                 .setAccount("gao")
-                .setTime("2017-5-3 13:14")
+                .setTime("2017年5月3日 13:14")
                 .setCalendar(Calendar.getInstance())
                 .setText("llllllobr")
                 .create();
@@ -58,7 +60,7 @@ public class NotesLab {
         NoteBody noteBody3 = NoteBody.Builder()
                 .setNoteId(3)
                 .setAccount("gaozhi")
-                .setTime("2017-5-3 13:14")
+                .setTime("2017年5月3日 13:14")
                 .setCalendar(Calendar.getInstance())
                 .setText("eeeedddd")
                 .create();
@@ -67,7 +69,7 @@ public class NotesLab {
         NoteBody noteBody4 = NoteBody.Builder()
                 .setNoteId(4)
                 .setAccount("gzhig")
-                .setTime("2017-5-3 13:14")
+                .setTime("2017年5月3日 13:14")
                 .setCalendar(Calendar.getInstance())
                 .setText("vdvdcrt")
                 .create();
@@ -76,7 +78,7 @@ public class NotesLab {
         NoteBody noteBody5 = NoteBody.Builder()
                 .setNoteId(5)
                 .setAccount("gsdfdfsng")
-                .setTime("2017-5-3 13:14")
+                .setTime("2017年5月3日 13:14")
                 .setCalendar(Calendar.getInstance())
                 .setText("343434343443ew")
                 .create();
@@ -85,7 +87,7 @@ public class NotesLab {
         NoteBody noteBody6 = NoteBody.Builder()
                 .setNoteId(6)
                 .setAccount("gsdfsxxxxxxdong")
-                .setTime("2017-5-3 13:14")
+                .setTime("2017年5月3日 13:14")
                 .setCalendar(Calendar.getInstance())
                 .setText("xcvxcvxcxc")
                 .create();
@@ -103,5 +105,36 @@ public class NotesLab {
         }
 
         return new File(externalFilesDir, noteBody.getPhotoFilename());
+    }
+
+    public void addNote(NoteBody noteBody){
+        mBodyList.add(noteBody);
+    }
+
+    public void setBodyList(LoginResult results){
+        List<NoteBody> list = new ArrayList<>();
+        List<LoginResult.Body> bodies = results.getBodies();
+        for (LoginResult.Body body : bodies){
+            NoteBody noteBody = NoteBody.Builder()
+                    .setNoteId(Integer.parseInt(body.getNoteid()))
+                    .setText(body.getNotedata())
+                    .setTime(body.getNotetime())
+                    .setAccount(body.getNoteaccount())
+                    .setCalendar(Calendar.getInstance())
+                    .create();
+            list.add(noteBody);
+        }
+        if (list != null){
+            mBodyList = list;
+        }
+    }
+    public void updateNote(int noteId,String noteData,String noteTime){
+        for (NoteBody noteBody1 : mBodyList){
+            if (noteBody1.getNoteId() == noteId){
+                noteBody1.setText(noteData);
+                noteBody1.setTime(noteTime);
+                break;
+            }
+        }
     }
 }
