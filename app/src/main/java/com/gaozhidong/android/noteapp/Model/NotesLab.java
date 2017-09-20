@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.gaozhidong.android.noteapp.ServiceResultEntity.LoginResult;
+import com.gaozhidong.android.noteapp.Util.DateUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,55 +42,55 @@ public class NotesLab {
 
             NoteBody noteBody = NoteBody.Builder()
                     .setNoteId(1)
-                    .setAccount("gaozhidong")
-                    .setTime("2017年5月3日 13:14")
+                    .setAccount("高志栋")
+                    .setTime(DateUtils.getNowStrDate())
                     .setCalendar(Calendar.getInstance())
-                    .setText("testtest")
+                    .setText("明天就是答辩了！后天解放！")
                     .create();
             mBodyList.add(noteBody);
 
         NoteBody noteBody2 = NoteBody.Builder()
                 .setNoteId(2)
-                .setAccount("gao")
-                .setTime("2017年5月3日 13:14")
+                .setAccount("高志栋")
+                .setTime(DateUtils.getNowStrDate())
                 .setCalendar(Calendar.getInstance())
-                .setText("llllllobr")
+                .setText("记得带钥匙")
                 .create();
         mBodyList.add(noteBody2);
 
         NoteBody noteBody3 = NoteBody.Builder()
                 .setNoteId(3)
-                .setAccount("gaozhi")
-                .setTime("2017年5月3日 13:14")
+                .setAccount("高志栋")
+                .setTime(DateUtils.getNowStrDate())
                 .setCalendar(Calendar.getInstance())
-                .setText("eeeedddd")
+                .setText("明天下午要去见客户，记得把文档带上，客户要看")
                 .create();
         mBodyList.add(noteBody3);
 
         NoteBody noteBody4 = NoteBody.Builder()
                 .setNoteId(4)
-                .setAccount("gzhig")
-                .setTime("2017年5月3日 13:14")
+                .setAccount("高志栋")
+                .setTime(DateUtils.getNowStrDate())
                 .setCalendar(Calendar.getInstance())
-                .setText("vdvdcrt")
+                .setText("10点半有场球赛要看")
                 .create();
         mBodyList.add(noteBody4);
 
         NoteBody noteBody5 = NoteBody.Builder()
                 .setNoteId(5)
-                .setAccount("gsdfdfsng")
-                .setTime("2017年5月3日 13:14")
+                .setAccount("高志栋")
+                .setTime(DateUtils.getNowStrDate())
                 .setCalendar(Calendar.getInstance())
-                .setText("343434343443ew")
+                .setText("回去的时候记得买水！买完水回到老地方，把水给那个人，然后回头再把水瓶返回去。")
                 .create();
         mBodyList.add(noteBody5);
 
         NoteBody noteBody6 = NoteBody.Builder()
                 .setNoteId(6)
-                .setAccount("gsdfsxxxxxxdong")
-                .setTime("2017年5月3日 13:14")
+                .setAccount("高志栋")
+                .setTime(DateUtils.getNowStrDate())
                 .setCalendar(Calendar.getInstance())
-                .setText("xcvxcvxcxc")
+                .setText("跟我到成都的街头走一走")
                 .create();
         mBodyList.add(noteBody6);
 

@@ -62,7 +62,7 @@ public class LoginActivity extends AppCompatActivity{
             @Override
             public void onClick(View view) {
 
-                Log.e(TAG, "onClick: " + mAccountTV.getText() + "\n" + mPasswordET.getText() );
+               /* Log.e(TAG, "onClick: " + mAccountTV.getText() + "\n" + mPasswordET.getText() );
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(InterfaceConst.HOST)
                         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -90,7 +90,7 @@ public class LoginActivity extends AppCompatActivity{
                                     NotesLab.get(LoginActivity.this).setBodyList(loginResult);
                                 }
                             }
-                        });
+                        });*/
                 Intent intent = NoteListActivity.newInstance(LoginActivity.this);
                 startActivity(intent);
             }

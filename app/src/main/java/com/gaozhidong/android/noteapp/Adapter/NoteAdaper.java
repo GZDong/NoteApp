@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.gaozhidong.android.noteapp.ContentActivity;
 import com.gaozhidong.android.noteapp.Model.NoteBody;
+import com.gaozhidong.android.noteapp.MyView.MarqueeTextView;
 import com.gaozhidong.android.noteapp.NoteListActivity;
 import com.gaozhidong.android.noteapp.R;
 import com.gaozhidong.android.noteapp.Util.LogUtil;

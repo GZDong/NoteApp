@@ -27,6 +27,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,36 +105,7 @@ public class ContentActivity extends AppCompatActivity {
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_content, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.set_time) {
-
-            FragmentManager fm = getSupportFragmentManager();
-            AlarmDialogFragment fragment = new AlarmDialogFragment();
-            fragment.show(fm,"chooseAlarm");
-            return true;
-        }
-        if (id == android.R.id.home){
-            Intent intent = new Intent();
-            setResult(1,intent);
-            finish();
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     /**
      * A placeholder fragment containing a simple view.
@@ -169,6 +141,7 @@ public class ContentActivity extends AppCompatActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true);
             mNoteBody = (NoteBody)getArguments().getSerializable("noteBody");
             mPhotoFile = NotesLab.get(getActivity()).getPhotoFile(mNoteBody);
         }
@@ -241,6 +214,44 @@ public class ContentActivity extends AppCompatActivity {
             if (requestCode == REQUEST_PHOTO){
                 updatePhotoView();
             }
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            super.onCreateOptionsMenu(menu, inflater);
+            inflater.inflate(R.menu.menu_content,menu);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+            int id = item.getItemId();
+
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.set_time) {
+
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                AlarmDialogFragment fragment = new AlarmDialogFragment();
+                fragment.show(fm,"chooseAlarm");
+                return true;
+            }
+            if (id == android.R.id.home){
+                Intent intent = new Intent();
+                getActivity().setResult(1,intent);
+                getActivity().finish();
+            }
+
+            if (id == R.id.item_share){
+                String report = getString(R.string.send_note,mNoteBody.getAccount(),mNoteBody.getTime(),mNoteBody.getText());
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_TEXT,report);
+                i.putExtra(Intent.EXTRA_SUBJECT,getString(R.string.send_note_subject));
+                i = Intent.createChooser(i,getString(R.string.send_note_choose));
+                startActivity(i);
+                LogUtil.e("test",report);
+            }
+
+            return super.onOptionsItemSelected(item);
         }
     }
 

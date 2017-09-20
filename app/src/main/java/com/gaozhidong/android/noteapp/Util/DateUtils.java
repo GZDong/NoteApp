@@ -7,6 +7,8 @@ import java.util.Calendar;
  */
 
 public class DateUtils {
+    private static String midStr1 =  "";
+    private static String midStr2 =  "";
     public static String getStrDate(Calendar calendar){
         int year;
         int month;
@@ -18,7 +20,13 @@ public class DateUtils {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
-        return year + "年" + month + "月" + day + "日 " + hour + ":" + minute;
+        if (minute<10){
+            midStr2 = "0";
+        }
+        if (hour<10){
+            midStr1 = "0";
+        }
+        return year + "年" + month + "月" + day + "日 " +midStr1 + hour + ":"+ midStr2 + minute;
     }
     public static String getNowStrDate(){
         Calendar calendar = Calendar.getInstance();
@@ -32,6 +40,12 @@ public class DateUtils {
         day = calendar.get(Calendar.DAY_OF_MONTH);
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
-        return year + "年" + month + "月" + day + "日 " + hour + ":" + minute;
+        if (minute<10){
+            midStr2 = "0";
+        }
+        if (hour<10){
+            midStr1 = "0";
+        }
+        return year + "年" + month + "月" + day + "日 " +midStr1 + hour + ":"+ midStr2 + minute;
     }
 }

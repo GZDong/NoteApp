@@ -36,7 +36,10 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="5dp"
             android:text="test"
-            android:textSize="18sp"/>
+            android:textSize="18sp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            />
     </LinearLayout>
 
     <FrameLayout
