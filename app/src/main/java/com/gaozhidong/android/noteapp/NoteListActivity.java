@@ -1,7 +1,9 @@
 package com.gaozhidong.android.noteapp;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -26,6 +28,7 @@ import com.gaozhidong.android.noteapp.Listener.OnRecyclerItemClickListener;
 import com.gaozhidong.android.noteapp.Model.NoteBody;
 import com.gaozhidong.android.noteapp.Model.NotesLab;
 import com.gaozhidong.android.noteapp.Util.DateUtils;
+import com.gaozhidong.android.noteapp.Util.LogUtil;
 
 import java.util.Calendar;
 import java.util.List;
@@ -47,6 +50,30 @@ public class NoteListActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("com.gaozhidong.android.Color");
+        BroadcastReceiver receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                NotesLab.get(context).updateFlag(intent.getIntExtra("noteId",1),1);
+                mNoteAdaper.notifyDataSetChanged();
+            }
+        };
+        registerReceiver(receiver,intentFilter);
+
+        IntentFilter intentFilter1 = new IntentFilter();
+        intentFilter1.addAction("com.gaozhidong.android.NoColor");
+        BroadcastReceiver receiver1 = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LogUtil.e("test","接收到清空图标的广播了" + intent.getIntExtra("noteId",1));
+                NotesLab.get(context).updateFlag(intent.getIntExtra("noteId",1),0);
+                mNoteAdaper.updateList(NotesLab.get(context).getBodyList());
+                mNoteAdaper.notifyDataSetChanged();
+            }
+        };
+        registerReceiver(receiver1,intentFilter1);
 
         mBodyList = NotesLab.get(this).getBodyList();
         mRecyclerView = (RecyclerView) findViewById(R.id.note_recycler_view);
@@ -99,6 +126,14 @@ public class NoteListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        for (NoteBody noteBody : mBodyList){
+            LogUtil.e("test",noteBody.getNoteId() + " " + noteBody.getFlag());
+        }
     }
 
     @Override

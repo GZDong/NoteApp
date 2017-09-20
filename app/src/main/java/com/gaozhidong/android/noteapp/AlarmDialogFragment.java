@@ -19,6 +19,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.gaozhidong.android.noteapp.Model.CalendarLab;
+
 import java.util.Calendar;
 
 
@@ -31,6 +33,8 @@ public class AlarmDialogFragment extends DialogFragment {
     private TextView mHMText;
     private Button mModifyYMDBtn;
     private Button mModifyHMBtn;
+    private String str1 = "";
+    private String str2 = "";
 
     private int hour;
     private int minute;
@@ -38,6 +42,16 @@ public class AlarmDialogFragment extends DialogFragment {
     private int month;
     private int day;
 
+    private int noteId;
+
+    public static AlarmDialogFragment newInstance(int noteId) {
+
+        Bundle args = new Bundle();
+        args.putInt("noteId",noteId);
+        AlarmDialogFragment fragment = new AlarmDialogFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
     //private AlarmManager mAlarmManager;
     @NonNull
     @Override
@@ -49,6 +63,8 @@ public class AlarmDialogFragment extends DialogFragment {
         mModifyYMDBtn = (Button) view.findViewById(R.id.modifyYMD);
         mModifyHMBtn = (Button) view.findViewById(R.id.modifyHM);
 
+        noteId = getArguments().getInt("noteId");
+
         //mAlarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         Calendar calendar = Calendar.getInstance();
@@ -58,8 +74,15 @@ public class AlarmDialogFragment extends DialogFragment {
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
 
-        mYMDText.setText(year + "-" + month + "-" + day);
-        mHMText.setText(hour + " : " + minute);
+        if (minute<10){
+            str2 = "0";
+        }
+        if (hour<10){
+            str1 = "0";
+        }
+
+        mYMDText.setText(year + "年" + month + "月" + day);
+        mHMText.setText(str1 + hour + ":" + str2 + minute);
 
         mModifyYMDBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,12 +91,11 @@ public class AlarmDialogFragment extends DialogFragment {
                     @Override
                     public void onDateSet(DatePicker datePicker, int chooseY, int chooseM, int chooseD) {
                         //设置年月日
-                        Calendar calout = Calendar.getInstance();
-                        calout.set(Calendar.YEAR,chooseY);
-                        calout.set(Calendar.MONTH,chooseM);
-                        calout.set(Calendar.DAY_OF_MONTH,chooseD);
+                        CalendarLab.get(getActivity()).setCalendarYMD(chooseY,chooseM,chooseD);
+                        mYMDText.setText(chooseY+ "年"+chooseM + "月" +chooseD);
                     }
                 },year,month,day);
+
                 datePickerDialog.show();
             }
         });
@@ -88,11 +110,19 @@ public class AlarmDialogFragment extends DialogFragment {
                         Calendar cal = Calendar.getInstance();
                         cal.set(Calendar.HOUR_OF_DAY,chooseH);
                         cal.set(Calendar.MINUTE,chooseM);
+
+                        CalendarLab.get(getActivity()).setCalendarHM(chooseH,chooseM);
                         //选择指定时间后开启服务，让服务来设定闹钟，让闹钟到时发送广播
-                        Intent intent = new Intent(getActivity(),AlarmService.class);
-                        intent.putExtra("calendar",cal);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        getActivity().startService(intent);
+
+                        String s1 = "";
+                        String s2 = "";
+                        if (chooseH<10){
+                            s1 = "0";
+                        }
+                        if (chooseM<10){
+                            s2 = "0";
+                        }
+                        mHMText.setText(s1 + chooseH + ":" + s2 + chooseM);
 
                     }
                 },hour,minute,true);
@@ -105,7 +135,14 @@ public class AlarmDialogFragment extends DialogFragment {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                        Intent intent = new Intent(getActivity(),AlarmService.class);
+                        intent.putExtra("calendar",CalendarLab.get(getActivity()).getCalendar());
+                        intent.putExtra("noteId",noteId);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        getActivity().startService(intent);
+                        Intent intent2 = new Intent("com.gaozhidong.android.Color");
+                        intent2.putExtra("noteId",noteId);
+                        getActivity().sendBroadcast(intent2);
                     }
                 })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

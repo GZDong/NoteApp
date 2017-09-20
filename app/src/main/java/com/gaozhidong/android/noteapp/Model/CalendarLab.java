@@ -35,4 +35,7 @@ public class CalendarLab {
         mCalendar.set(Calendar.HOUR_OF_DAY,hour);
         mCalendar.set(Calendar.MINUTE,minute);
     }
+    public Calendar getCalendar(){
+        return mCalendar;
+    }
 }

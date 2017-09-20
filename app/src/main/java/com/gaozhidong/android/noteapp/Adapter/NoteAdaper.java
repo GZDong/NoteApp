@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gaozhidong.android.noteapp.ContentActivity;
@@ -41,6 +42,11 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
     @Override
     public void onBindViewHolder(NoteViewHodler viewHodler, int position) {
         NoteBody noteBody = mList.get(position);
+        if (noteBody.getFlag() == 1){
+            viewHodler.tagImgView.setVisibility(View.VISIBLE);
+        }else {
+            viewHodler.tagImgView.setVisibility(View.GONE );
+        }
         viewHodler.textBody.setText(noteBody.getText());
         viewHodler.timeBody.setText(noteBody.getTime());
         viewHodler.setNoteId(noteBody.getNoteId());
@@ -62,12 +68,14 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
     public class NoteViewHodler extends RecyclerView.ViewHolder{
         private TextView textBody;
         private TextView timeBody;
+        private ImageView tagImgView;
         private int noteId;
 
         public NoteViewHodler(View view){
             super(view);
             textBody = (TextView) view.findViewById(R.id.text_body);
             timeBody = (TextView) view.findViewById(R.id.text_time);
+            tagImgView = (ImageView) view.findViewById(R.id.ring_img);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

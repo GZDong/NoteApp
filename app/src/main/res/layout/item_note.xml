@@ -42,16 +42,28 @@
             />
     </LinearLayout>
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/imageView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="5dp"
             android:layout_marginTop="5dp"
             android:src="@drawable/left_icon_3"/>
-    </FrameLayout>
+
+        <ImageView
+            android:id="@+id/ring_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/imageView2"
+            android:layout_marginTop="13dp"
+            android:src="@drawable/ring3"
+            android:layout_alignEnd="@+id/imageView2"
+            android:visibility="gone"/>
+    </RelativeLayout>
 
 </LinearLayout>

@@ -4,8 +4,10 @@ import android.app.AlarmManager;
 import android.app.DatePickerDialog;
 import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -144,6 +146,7 @@ public class ContentActivity extends AppCompatActivity {
             setHasOptionsMenu(true);
             mNoteBody = (NoteBody)getArguments().getSerializable("noteBody");
             mPhotoFile = NotesLab.get(getActivity()).getPhotoFile(mNoteBody);
+
         }
 
         @Override
@@ -230,7 +233,7 @@ public class ContentActivity extends AppCompatActivity {
             if (id == R.id.set_time) {
 
                 FragmentManager fm = getActivity().getSupportFragmentManager();
-                AlarmDialogFragment fragment = new AlarmDialogFragment();
+                AlarmDialogFragment fragment = AlarmDialogFragment.newInstance(mNoteBody.getNoteId());
                 fragment.show(fm,"chooseAlarm");
                 return true;
             }
@@ -250,7 +253,6 @@ public class ContentActivity extends AppCompatActivity {
                 startActivity(i);
                 LogUtil.e("test",report);
             }
-
             return super.onOptionsItemSelected(item);
         }
     }

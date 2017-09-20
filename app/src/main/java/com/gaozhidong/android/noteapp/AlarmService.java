@@ -62,8 +62,10 @@ public class AlarmService extends Service {
         Log.e(TAG, "onStartCommand: 服务启动" );
         mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         mCalendar = (Calendar) intent.getSerializableExtra("calendar");
+        int noteId = intent.getIntExtra("noteId",0);
         Intent intent2 = new Intent();
         intent2.setAction("com.gaozhidong.android.RING");
+        intent2.putExtra("noteId",noteId);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent2,0);
 
        /* Intent intent3 = new Intent(this,AlarmReceiver.class);

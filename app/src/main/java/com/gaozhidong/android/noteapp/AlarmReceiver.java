@@ -11,6 +11,13 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.gaozhidong.android.noteapp.Model.CalendarLab;
+import com.gaozhidong.android.noteapp.Model.NoteBody;
+import com.gaozhidong.android.noteapp.Model.NotesLab;
+import com.gaozhidong.android.noteapp.Util.LogUtil;
+
+import java.util.Calendar;
+
 /**
  * Created by zhidong on 2017/9/18.
  */
@@ -20,13 +27,16 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("com.gaozhidong.android.RING")){
-            Log.e(TAG, "onReceive: !!!!!!" + System.currentTimeMillis());
+            LogUtil.e("test", "onReceive: !!!!!!" + Calendar.getInstance().toString());
             Intent intent2 = new Intent(context,ContentActivity.class);
+            int noteId = intent.getIntExtra("noteId",1);
+            LogUtil.e("test",noteId + "");
+            NoteBody noteBody = NotesLab.get(context).queryNote(noteId);
             PendingIntent pi = PendingIntent.getActivity(context,0,intent2,0);
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
-                    .setContentTitle("xxx")
-                    .setContentText("闹钟响了")
+                    .setContentTitle(noteBody.getTime())
+                    .setContentText(noteBody.getText())
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),R.mipmap.ic_launcher))
                     .setDefaults(NotificationCompat.DEFAULT_ALL)
@@ -35,6 +45,12 @@ public class AlarmReceiver extends BroadcastReceiver {
                     .setContentIntent(pi);
             Notification notification = builder.build();
             manager.notify(1,notification);
+
+            NotesLab.get(context).updateFlag(noteId,0);
+            Intent intent1 = new Intent("com.gaozhidong.android.NoColor");
+            intent1.putExtra("noteId",noteId);
+            context.sendBroadcast(intent1);
+            LogUtil.e("test","发送清空图标的广播" + noteId);
         }
     }
 }

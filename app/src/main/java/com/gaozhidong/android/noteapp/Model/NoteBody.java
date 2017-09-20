@@ -15,6 +15,7 @@ public class NoteBody extends DataSupport implements Serializable{
     private String mTime;
     private String mAccount;
     private Calendar mCalendar;
+    private int flag = 0;
 
     public NoteBody() {
     }
@@ -48,10 +49,18 @@ public class NoteBody extends DataSupport implements Serializable{
         return this;
     }
 
+    public void setFlag(int flag) {
+        this.flag = flag;
+    }
+
     public NoteBody create() {
         return this;
     }
 
+
+    public int getFlag() {
+        return flag;
+    }
 
     public int getNoteId() {
         return mNoteId;

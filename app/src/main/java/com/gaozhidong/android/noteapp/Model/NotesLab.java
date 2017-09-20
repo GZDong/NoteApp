@@ -138,4 +138,21 @@ public class NotesLab {
             }
         }
     }
+    public NoteBody queryNote(int noteId){
+        for (NoteBody noteBody: mBodyList){
+            if (noteBody.getNoteId() == noteId){
+                return noteBody;
+            }
+        }
+        return mBodyList.get(1);
+    }
+
+    public void updateFlag(int noteId,int flag){
+        for (NoteBody noteBody: mBodyList){
+            if (noteBody.getNoteId() == noteId){
+                noteBody.setFlag(flag);
+                break;
+            }
+        }
+    }
 }
