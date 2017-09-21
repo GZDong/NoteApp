@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">NoteApp</string>
+    <string name="app_name">便签APP</string>
 
+    <string name="appName">便签APP</string>
     <!-- Strings related to login -->
     <string name="prompt_email">账号</string>
     <string name="prompt_password">密码</string>
     <string name="action_sign_in">登  录</string>
     <string name="action_register">注  册</string>
     <string name="activity_label">搜索</string>
-    <string name="activity_sign">登录</string>
+    <string name="activity_sign">便签</string>
     <string name="prompt_password_again">确认密码</string>
     <string name="share_note">分享给朋友</string>
     <string name="action_sign_in_short">Sign in</string>
