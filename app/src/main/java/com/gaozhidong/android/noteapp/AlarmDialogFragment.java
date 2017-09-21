@@ -47,17 +47,18 @@ public class AlarmDialogFragment extends DialogFragment {
     public static AlarmDialogFragment newInstance(int noteId) {
 
         Bundle args = new Bundle();
-        args.putInt("noteId",noteId);
+        args.putInt("noteId", noteId);
         AlarmDialogFragment fragment = new AlarmDialogFragment();
         fragment.setArguments(args);
         return fragment;
     }
+
     //private AlarmManager mAlarmManager;
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_dialog,null,false);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_dialog, null, false);
         mYMDText = (TextView) view.findViewById(R.id.YMDText);
         mHMText = (TextView) view.findViewById(R.id.HMText);
         mModifyYMDBtn = (Button) view.findViewById(R.id.modifyYMD);
@@ -74,10 +75,10 @@ public class AlarmDialogFragment extends DialogFragment {
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
 
-        if (minute<10){
+        if (minute < 10) {
             str2 = "0";
         }
-        if (hour<10){
+        if (hour < 10) {
             str1 = "0";
         }
 
@@ -91,10 +92,10 @@ public class AlarmDialogFragment extends DialogFragment {
                     @Override
                     public void onDateSet(DatePicker datePicker, int chooseY, int chooseM, int chooseD) {
                         //设置年月日
-                        CalendarLab.get(getActivity()).setCalendarYMD(chooseY,chooseM,chooseD);
-                        mYMDText.setText(chooseY+ "年"+chooseM + "月" +chooseD);
+                        CalendarLab.get(getActivity()).setCalendarYMD(chooseY, chooseM, chooseD);
+                        mYMDText.setText(chooseY + "年" + chooseM + "月" + chooseD);
                     }
-                },year,month,day);
+                }, year, month, day);
 
                 datePickerDialog.show();
             }
@@ -107,25 +108,19 @@ public class AlarmDialogFragment extends DialogFragment {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int chooseH, int chooseM) {
                         //这里的chooseH和chooseM就是选中的小时和分钟
-                        Calendar cal = Calendar.getInstance();
-                        cal.set(Calendar.HOUR_OF_DAY,chooseH);
-                        cal.set(Calendar.MINUTE,chooseM);
-
-                        CalendarLab.get(getActivity()).setCalendarHM(chooseH,chooseM);
-                        //选择指定时间后开启服务，让服务来设定闹钟，让闹钟到时发送广播
-
+                        CalendarLab.get(getActivity()).setCalendarHM(chooseH, chooseM);
                         String s1 = "";
                         String s2 = "";
-                        if (chooseH<10){
+                        if (chooseH < 10) {
                             s1 = "0";
                         }
-                        if (chooseM<10){
+                        if (chooseM < 10) {
                             s2 = "0";
                         }
                         mHMText.setText(s1 + chooseH + ":" + s2 + chooseM);
 
                     }
-                },hour,minute,true);
+                }, hour, minute, true);  //最后一个参数表示是否使用24小时制
                 timePickerDialog.show();
             }
         });
@@ -135,13 +130,14 @@ public class AlarmDialogFragment extends DialogFragment {
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Intent intent = new Intent(getActivity(),AlarmService.class);
-                        intent.putExtra("calendar",CalendarLab.get(getActivity()).getCalendar());
-                        intent.putExtra("noteId",noteId);
+                        Intent intent = new Intent(getActivity(), AlarmService.class);
+                        intent.putExtra("calendar", CalendarLab.get(getActivity()).getCalendar());
+                        intent.putExtra("noteId", noteId);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getActivity().startService(intent);
+                        //发送一条启动闹铃图标的广播
                         Intent intent2 = new Intent("com.gaozhidong.android.Color");
-                        intent2.putExtra("noteId",noteId);
+                        intent2.putExtra("noteId", noteId);
                         getActivity().sendBroadcast(intent2);
                     }
                 })

@@ -9,7 +9,10 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.gaozhidong.android.noteapp.Adapter.NoteAdaper;
 import com.gaozhidong.android.noteapp.Application.MyApplication;
+import com.gaozhidong.android.noteapp.Model.NoteBody;
+import com.gaozhidong.android.noteapp.Model.NotesLab;
 import com.gaozhidong.android.noteapp.R;
+import com.gaozhidong.android.noteapp.Util.LogUtil;
 
 import java.util.Collections;
 
@@ -90,8 +93,11 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         int adapterPosition = viewHolder.getAdapterPosition();  //获得被侧滑的子项位置
+       // NoteBody noteBody = mNoteAdaper.getDataList().get(adapterPosition);
+       // LogUtil.e("test","被移除的noteId" + noteBody.getNoteId());
         mNoteAdaper.notifyItemRemoved(adapterPosition);  //视图清除
         mNoteAdaper.getDataList().remove(adapterPosition);  //数据清除
+        NotesLab.get(MyApplication.getContext()).printList();
     }
 
     /**

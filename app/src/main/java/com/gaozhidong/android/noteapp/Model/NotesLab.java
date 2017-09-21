@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import com.gaozhidong.android.noteapp.ServiceResultEntity.LoginResult;
 import com.gaozhidong.android.noteapp.Util.DateUtils;
+import com.gaozhidong.android.noteapp.Util.LogUtil;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ public class NotesLab {
     private static NotesLab sNotesLab;
     private Context mContext;
     private List<NoteBody> mBodyList;
+    private int maxId;
 
     private NotesLab(Context context) {
         mContext = context.getApplicationContext();
         mBodyList = new ArrayList<>();
         initBodyList();
+        maxId = getMaxId();
     }
 
     public static NotesLab get(Context context) {
@@ -94,6 +97,15 @@ public class NotesLab {
                 .create();
         mBodyList.add(noteBody6);
 
+        NoteBody noteBody7 = NoteBody.Builder()
+                .setNoteId(7)
+                .setAccount("高志栋")
+                .setTime(DateUtils.getNowStrDate())
+                .setCalendar(Calendar.getInstance())
+                .setText("回去之后记得大扫除一波，不然的宿舍太脏了，住了会很不舒服的")
+                .create();
+        mBodyList.add(noteBody7);
+
     }
     public List<NoteBody> getBodyList(){
         return mBodyList;
@@ -154,5 +166,26 @@ public class NotesLab {
                 break;
             }
         }
+    }
+
+    public void printList(){
+        for (NoteBody noteBody : mBodyList){
+            LogUtil.e("test",noteBody.getNoteId() + ";" + "\n");
+        }
+    }
+
+    private int getMaxId(){
+        NoteBody noteBody = mBodyList.get(0);
+        int max = noteBody.getNoteId();
+        for (NoteBody noteBody1 : mBodyList){
+            if (max <= noteBody1.getNoteId()){
+                max = noteBody1.getNoteId();
+            }
+        }
+        return max;
+    }
+    public int setMaxIdAndGetIt(){
+        maxId ++;
+        return maxId;
     }
 }

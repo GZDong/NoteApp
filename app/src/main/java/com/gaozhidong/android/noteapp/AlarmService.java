@@ -23,13 +23,14 @@ public class AlarmService extends Service {
     private static final String TAG = "test";
     private Calendar mCalendar;
     private AlarmManager mAlarmManager;
+
     public AlarmService() {
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.e(TAG, "onCreate: 服务第一次开启" );
+        Log.e(TAG, "onCreate: 服务第一次开启");
        /* IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.gaozhidong.android.RING");
         BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -58,27 +59,28 @@ public class AlarmService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent,int flags, int startId) {
-        Log.e(TAG, "onStartCommand: 服务启动" );
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.e(TAG, "onStartCommand: 服务启动");
         mAlarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         mCalendar = (Calendar) intent.getSerializableExtra("calendar");
-        int noteId = intent.getIntExtra("noteId",0);
+        int noteId = intent.getIntExtra("noteId", 0);
         Intent intent2 = new Intent();
         intent2.setAction("com.gaozhidong.android.RING");
-        intent2.putExtra("noteId",noteId);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent2,0);
+        intent2.putExtra("noteId", noteId);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);
 
        /* Intent intent3 = new Intent(this,AlarmReceiver.class);
         PendingIntent pendingIntent1 = PendingIntent.getBroadcast(this,0,intent3,0);
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         manager.setExact(AlarmManager.RTC_WAKEUP,mCalendar.getTimeInMillis(),pendingIntent1);*/
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP,mCalendar.getTimeInMillis(),pendingIntent);
-        }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP,mCalendar.getTimeInMillis(),pendingIntent);
-        }else{
-            mAlarmManager.set(AlarmManager.RTC_WAKEUP,mCalendar.getTimeInMillis(),pendingIntent);
+       //根据不同的版本使用不同的设置方法
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
+        } else {
+            mAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
         }
 
         Log.e(TAG, "onStartCommand: 设置闹钟");
@@ -88,7 +90,7 @@ public class AlarmService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e(TAG, "onDestroy: 服务被杀死" );
+        Log.e(TAG, "onDestroy: 服务被杀死");
     }
 
 

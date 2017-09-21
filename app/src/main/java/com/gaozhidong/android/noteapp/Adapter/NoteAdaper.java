@@ -42,6 +42,7 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
     @Override
     public void onBindViewHolder(NoteViewHodler viewHodler, int position) {
         NoteBody noteBody = mList.get(position);
+      //  LogUtil.e("test","postion : " + position);
         if (noteBody.getFlag() == 1){
             viewHodler.tagImgView.setVisibility(View.VISIBLE);
         }else {
@@ -69,7 +70,7 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
         private TextView textBody;
         private TextView timeBody;
         private ImageView tagImgView;
-        private int noteId;
+        public int noteId;
 
         public NoteViewHodler(View view){
             super(view);
@@ -80,7 +81,7 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
                 @Override
                 public void onClick(View view) {
                     Intent intent = ContentActivity.newInstance(mContext);
-                    LogUtil.e("test","put " + noteId);
+                    // LogUtil.e("test","put " + noteId);
                     intent.putExtra("noteId",noteId);
                     NoteListActivity noteListActivity = (NoteListActivity) mContext;
                     noteListActivity.startActivityForResult(intent,1);

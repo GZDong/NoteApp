@@ -100,7 +100,8 @@ public class NoteListActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int noteid = mBodyList.size() + 1;
+                int noteid = NotesLab.get(NoteListActivity.this).setMaxIdAndGetIt();
+              //  LogUtil.e("test","此时一共有"+mBodyList.size() + "为新便签起的id：" + noteid);
                 NoteBody noteBody = NoteBody.Builder()
                         .setNoteId(noteid)
                         .setText("")
@@ -131,9 +132,9 @@ public class NoteListActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        for (NoteBody noteBody : mBodyList){
+        /*for (NoteBody noteBody : mBodyList){
             LogUtil.e("test",noteBody.getNoteId() + " " + noteBody.getFlag());
-        }
+        }*/
     }
 
     @Override

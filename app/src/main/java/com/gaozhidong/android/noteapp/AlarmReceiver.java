@@ -32,6 +32,7 @@ public class AlarmReceiver extends BroadcastReceiver {
             int noteId = intent.getIntExtra("noteId",1);
             LogUtil.e("test",noteId + "");
             NoteBody noteBody = NotesLab.get(context).queryNote(noteId);
+            //发送通知
             PendingIntent pi = PendingIntent.getActivity(context,0,intent2,0);
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
@@ -46,11 +47,11 @@ public class AlarmReceiver extends BroadcastReceiver {
             Notification notification = builder.build();
             manager.notify(1,notification);
 
+            //发送一条清空闹铃图标的广播
             NotesLab.get(context).updateFlag(noteId,0);
             Intent intent1 = new Intent("com.gaozhidong.android.NoColor");
             intent1.putExtra("noteId",noteId);
             context.sendBroadcast(intent1);
-            LogUtil.e("test","发送清空图标的广播" + noteId);
         }
     }
 }
