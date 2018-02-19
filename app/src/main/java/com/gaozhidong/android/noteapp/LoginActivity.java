@@ -2,6 +2,7 @@ package com.gaozhidong.android.noteapp;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.gaozhidong.android.noteapp.Model.NotesLab;
 import com.gaozhidong.android.noteapp.ServicePort.Login_Interface;
@@ -37,6 +39,7 @@ public class LoginActivity extends AppCompatActivity{
     private Button mSignBtn;
     private static final String p1 = "android.permission.READ_EXTERNAL_STORAGE";
     private static final String p2 = "android.permission.WRITE_EXTERNAL_STORAGE";
+    private static final String p3 = "android.permission.CAMERA";
     private AutoCompleteTextView mAccountTV;
     private EditText mPasswordET;
 
@@ -48,8 +51,9 @@ public class LoginActivity extends AppCompatActivity{
         initView();
         initAction();
         if (ContextCompat.checkSelfPermission(this,p1) != PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this,p2) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this,new String[]{p1,p2},1);
+                && ContextCompat.checkSelfPermission(this,p2) != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this,p3) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{p1,p2,p3},1);
         }
     }
     void initView(){
@@ -110,6 +114,20 @@ public class LoginActivity extends AppCompatActivity{
             startActivity(intent);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 1:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[1] == PackageManager.PERMISSION_GRANTED
+                        && grantResults[2] == PackageManager.PERMISSION_GRANTED){
+
+                }else {
+                    Toast.makeText(this, "no permission!", Toast.LENGTH_SHORT).show();
+                }
+        }
     }
 }
 

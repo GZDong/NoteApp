@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <litepal>
     <dbname value = "noteDB"></dbname>
-    <version value = "1"></version>
+    <version value = "3"></version>
     <list>
         <mapping class = "com.gaozhidong.android.noteapp.Model.NoteBody"></mapping>
+        <mapping class = "com.gaozhidong.android.noteapp.Model.Pictures"></mapping>
     </list>
 </litepal>

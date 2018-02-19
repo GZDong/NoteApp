@@ -2,7 +2,9 @@ package com.gaozhidong.android.noteapp.Application;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 
+import org.litepal.LitePal;
 import org.litepal.LitePalApplication;
 
 /**
@@ -16,7 +18,11 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         sContext = getApplicationContext();
-        LitePalApplication.initialize(sContext);
+        LitePal.initialize(this);
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
     }
     public static Context getContext(){
         return sContext;

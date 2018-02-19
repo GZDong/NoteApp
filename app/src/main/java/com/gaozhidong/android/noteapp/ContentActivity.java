@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -27,6 +30,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -40,8 +44,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.gaozhidong.android.noteapp.Adapter.PicListAdapter;
 import com.gaozhidong.android.noteapp.Model.NoteBody;
 import com.gaozhidong.android.noteapp.Model.NotesLab;
+import com.gaozhidong.android.noteapp.Model.Pictures;
 import com.gaozhidong.android.noteapp.Util.DateUtils;
 import com.gaozhidong.android.noteapp.Util.ImgUtils;
 import com.gaozhidong.android.noteapp.Util.LogUtil;
@@ -66,6 +72,8 @@ public class ContentActivity extends AppCompatActivity {
     private static final int REQUEST_PHOTO = 1;
     private int noteId;
 
+    public static final String TAG = "contentActivity";
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -88,7 +96,7 @@ public class ContentActivity extends AppCompatActivity {
         mBodyList = NotesLab.get(this).getBodyList();
 
         noteId = getIntent().getIntExtra("noteId",0);
-        LogUtil.e("test",""+ noteId);
+        //LogUtil.e("test",""+ noteId);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -97,6 +105,7 @@ public class ContentActivity extends AppCompatActivity {
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        //这个for指定当前显示的页面
         for (int i = 0; i < mBodyList.size();i++){
             if (mBodyList.get(i).getNoteId() == noteId){
                 mViewPager.setCurrentItem(i);
@@ -118,12 +127,16 @@ public class ContentActivity extends AppCompatActivity {
          * fragment.
          */
         private NoteBody mNoteBody;
-        private File mPhotoFile;
+       // private File mPhotoFile;
         private FloatingActionButton fab;
-        private ImageView mImageView;
+        //private ImageView mImageView;
         private TextView textTime;
         private EditText text;
         private String oldString;
+        private RecyclerView mRecyclerView;
+        private PicListAdapter mPicListAdapter;
+        private List<String> mPath;
+        private int noteid;
 
         public PlaceholderFragment() {
         }
@@ -145,8 +158,8 @@ public class ContentActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setHasOptionsMenu(true);
             mNoteBody = (NoteBody)getArguments().getSerializable("noteBody");
-            mPhotoFile = NotesLab.get(getActivity()).getPhotoFile(mNoteBody);
-
+            noteid = mNoteBody.getNoteId();
+           // mPhotoFile = NotesLab.get(getActivity()).getPhotoFile(mNoteBody);
         }
 
         @Override
@@ -155,27 +168,59 @@ public class ContentActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_content, container, false);
             textTime = (TextView) rootView.findViewById(R.id.text_title);
             text = (EditText) rootView.findViewById(R.id.input_text);
-            mImageView = (ImageView ) rootView.findViewById(R.id.img_view);
+           // mImageView = (ImageView ) rootView.findViewById(R.id.img_view);
             textTime.setText(mNoteBody.getTime());
             text.setText(mNoteBody.getText());
             text.setSelection(text.getText().length());
             oldString = mNoteBody.getText();
             fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+            mPath = NotesLab.get(getActivity()).getPicPaths(noteid);
+            mRecyclerView = (RecyclerView) rootView.findViewById(R.id.picture_list);
+            mPicListAdapter = new PicListAdapter(getActivity(),mPath);
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            mRecyclerView.setLayoutManager(linearLayoutManager);
+            mRecyclerView.setAdapter(mPicListAdapter);
+            if (mPath!=null && mPath.size() > 1){
+                mRecyclerView.scrollToPosition(mPath.size()-1);
+            }
 
 
-            PackageManager pm = getActivity().getPackageManager();
+            /*PackageManager pm = getActivity().getPackageManager();
             final Intent imgIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             boolean canTakePhoto = mPhotoFile!=null && imgIntent.resolveActivity(pm)!=null;
             if (canTakePhoto){
                 Uri uri = Uri.fromFile(mPhotoFile);
                 imgIntent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
-            }
+            }*/
 
 
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivityForResult(imgIntent,REQUEST_PHOTO);
+                    File externalFilesDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    String picName;
+                    if (mPath == null){
+                        picName = mNoteBody.getNoteId() + "_" + "1";
+                    }else {
+                        int count = mPath.size() + 1;
+                        picName = mNoteBody.getNoteId() + "_" + count;
+                    }
+
+                    String path = externalFilesDir + File.separator + picName;
+
+                    Pictures pictures = new Pictures();
+                    pictures.setNoteid(mNoteBody.getNoteId());
+                    pictures.setName(picName);
+                    pictures.setPath(path);
+                    pictures.save();
+
+                    mPath.add(path);
+                    Intent intent =  new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    Uri uri = Uri.fromFile(new File(path));
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT,uri);
+
+                    startActivityForResult(intent,REQUEST_PHOTO);
                 }
             });
 
@@ -203,13 +248,11 @@ public class ContentActivity extends AppCompatActivity {
         }
 
         private void updatePhotoView(){
-            if (mPhotoFile == null || !mPhotoFile.exists()){
-                mImageView.setVisibility(View.GONE);
-            }else {
-                Bitmap bitmap = ImgUtils.getScaleBitmap(mPhotoFile.getPath(),getActivity());
-                mImageView.setVisibility(View.VISIBLE);
-                mImageView.setImageBitmap(bitmap);
-            }
+
+               // Bitmap bitmap = ImgUtils.getScaleBitmap(mPhotoFile.getPath(),getActivity());
+               // mImageView.setVisibility(View.VISIBLE);
+              //  mImageView.setImageBitmap(bitmap);
+                mPicListAdapter.notifyDataSetChanged();
         }
 
         @Override

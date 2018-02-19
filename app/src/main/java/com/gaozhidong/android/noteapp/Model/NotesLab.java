@@ -2,10 +2,13 @@ package com.gaozhidong.android.noteapp.Model;
 
 import android.content.Context;
 import android.os.Environment;
+import android.util.Log;
 
 import com.gaozhidong.android.noteapp.ServiceResultEntity.LoginResult;
 import com.gaozhidong.android.noteapp.Util.DateUtils;
 import com.gaozhidong.android.noteapp.Util.LogUtil;
+
+import org.litepal.crud.DataSupport;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ public class NotesLab {
     private Context mContext;
     private List<NoteBody> mBodyList;
     private int maxId;
+    public static final String TAG = "Lab";
 
     private NotesLab(Context context) {
         mContext = context.getApplicationContext();
@@ -187,5 +191,29 @@ public class NotesLab {
     public int setMaxIdAndGetIt(){
         maxId ++;
         return maxId;
+    }
+
+    public List<String> getPicPaths(int id){
+        List<String> pathlist = new ArrayList<>();
+        List<Pictures> pics = getPics(id);
+        if (pics != null && pics.size() > 0){
+            for (Pictures pictures : pics){
+                pathlist.add(pictures.getPath());
+            }
+        }
+        return pathlist;
+        /*for (NoteBody noteBody : mBodyList){
+            if (noteBody.getNoteId() == id){
+                File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                String path = externalFilesDir + File.separator + noteBody.getPhotoFilename();
+                pathlist.add(path);
+            }
+        }
+        return pathlist;*/
+    }
+
+    public List<Pictures> getPics(int id){
+        List<Pictures> list = DataSupport.where("noteid = ?",Integer.toString(id)) .find(Pictures.class);
+        return list;
     }
 }
