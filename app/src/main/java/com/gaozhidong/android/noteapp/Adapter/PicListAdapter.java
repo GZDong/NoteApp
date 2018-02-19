@@ -1,6 +1,7 @@
 package com.gaozhidong.android.noteapp.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.gaozhidong.android.noteapp.PicShowActivity;
 import com.gaozhidong.android.noteapp.R;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
 
     private Context mContext;
     private List<String> mPicList;
+    private int nodeid;
 
     public PicListAdapter(Context context,List<String> list){
         mContext = context;
@@ -34,11 +37,20 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder,final int position) {
         String path = mPicList.get(position);
         if (!TextUtils.isEmpty(path)){
             Glide.with(mContext).load(path).asBitmap().centerCrop().into(holder.mImageView);
         }
+        holder.mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, PicShowActivity.class);
+                intent.putExtra("position",position);
+                intent.putExtra("NoteId",nodeid);
+                mContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -57,5 +69,9 @@ public class PicListAdapter extends RecyclerView.Adapter<PicListAdapter.MyViewHo
             super(view);
             mImageView = view.findViewById(R.id.picture_took);
         }
+    }
+
+    public void setNodeid(int nodeid) {
+        this.nodeid = nodeid;
     }
 }

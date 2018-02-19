@@ -3,16 +3,16 @@
           package="com.gaozhidong.android.noteapp">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.READ_PROFILE"/>
     <uses-permission android:name="android.permission.READ_CONTACTS"/>
     <uses-permission android:name="android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
-                     android:maxSdkVersion="18"/>
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
 
     <application
         android:name=".Application.MyApplication"
@@ -39,8 +39,9 @@
         <activity
             android:name=".ContentActivity"
             android:label="@string/title_activity_content"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask">
+            android:windowSoftInputMode="adjustPan">
         </activity>
 
         <receiver
@@ -58,13 +59,17 @@
             android:process="system">
         </service>
 
-        <activity android:name=".SortActivity"
+        <activity
+            android:name=".SortActivity"
             android:label="@string/activity_label"
             android:parentActivityName=".NoteListActivity">
         </activity>
-        <activity android:name=".RegisterActivity"
+        <activity
+            android:name=".RegisterActivity"
             android:label="@string/action_register"
             android:parentActivityName=".LoginActivity">
+        </activity>
+        <activity android:name=".PicShowActivity">
         </activity>
     </application>
 

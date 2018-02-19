@@ -2,11 +2,13 @@ package com.gaozhidong.android.noteapp.Model;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.Serializable;
+
 /**
  * Created by zhidong on 2018/2/19.
  */
 
-public class Pictures extends DataSupport{
+public class Pictures extends DataSupport implements Serializable{
     private int noteid;
     private String name;
     private String uri;

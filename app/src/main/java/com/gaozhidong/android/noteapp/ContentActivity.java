@@ -177,6 +177,7 @@ public class ContentActivity extends AppCompatActivity {
             mPath = NotesLab.get(getActivity()).getPicPaths(noteid);
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.picture_list);
             mPicListAdapter = new PicListAdapter(getActivity(),mPath);
+            mPicListAdapter.setNodeid(noteid);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
             mRecyclerView.setLayoutManager(linearLayoutManager);
