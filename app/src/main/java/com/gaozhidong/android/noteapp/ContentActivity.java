@@ -96,7 +96,6 @@ public class ContentActivity extends AppCompatActivity {
         mBodyList = NotesLab.get(this).getBodyList();
 
         noteId = getIntent().getIntExtra("noteId",0);
-        //LogUtil.e("test",""+ noteId);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

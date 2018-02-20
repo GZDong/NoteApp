@@ -82,7 +82,7 @@ public class AlarmDialogFragment extends DialogFragment {
             str1 = "0";
         }
 
-        mYMDText.setText(year + "年" + month + "月" + day);
+        mYMDText.setText(year + "年" + month + "月" + day + "日");
         mHMText.setText(str1 + hour + ":" + str2 + minute);
 
         mModifyYMDBtn.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +93,7 @@ public class AlarmDialogFragment extends DialogFragment {
                     public void onDateSet(DatePicker datePicker, int chooseY, int chooseM, int chooseD) {
                         //设置年月日
                         CalendarLab.get(getActivity()).setCalendarYMD(chooseY, chooseM, chooseD);
-                        mYMDText.setText(chooseY + "年" + chooseM + "月" + chooseD);
+                        mYMDText.setText(chooseY + "年" + chooseM + "月" + chooseD + "日");
                     }
                 }, year, month, day);
 

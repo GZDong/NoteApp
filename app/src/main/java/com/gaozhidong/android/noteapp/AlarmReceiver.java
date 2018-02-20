@@ -27,13 +27,18 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("com.gaozhidong.android.RING")){
-            LogUtil.e("test", "onReceive: !!!!!!" + Calendar.getInstance().toString());
-            Intent intent2 = new Intent(context,ContentActivity.class);
+            LogUtil.e("test", "onReceive: !!!!!!" );
+
             int noteId = intent.getIntExtra("noteId",1);
-            LogUtil.e("test",noteId + "");
+            LogUtil.e("test","在接收器接收到的id为 "+noteId);
+
+            Intent intent2 = new Intent(context,ContentActivity.class);
+            intent2.putExtra("noteId",noteId);
+
             NoteBody noteBody = NotesLab.get(context).queryNote(noteId);
             //发送通知
-            PendingIntent pi = PendingIntent.getActivity(context,0,intent2,0);
+            PendingIntent pi = PendingIntent.getActivity(context,0,intent2,PendingIntent.FLAG_UPDATE_CURRENT);
+
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                     .setContentTitle(noteBody.getTime())

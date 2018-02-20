@@ -76,10 +76,14 @@ public class AlarmService extends Service {
 
        //根据不同的版本使用不同的设置方法
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Log.e(TAG, "onStartCommand:  大于M版本，设置的时间为：" + mCalendar.get(Calendar.YEAR) + mCalendar.get(Calendar.MONTH)
+            + mCalendar.get(Calendar.DAY_OF_MONTH) + mCalendar.get(Calendar.HOUR_OF_DAY) + mCalendar.get(Calendar.MINUTE));
             mAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Log.e(TAG, "onStartCommand: 大于KITKAT版本" );
             mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
         } else {
+            Log.e(TAG, "onStartCommand: 低版本" );
             mAlarmManager.set(AlarmManager.RTC_WAKEUP, mCalendar.getTimeInMillis(), pendingIntent);
         }
 
