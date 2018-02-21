@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gaozhidong.android.noteapp.Model.NoteBody;
 import com.gaozhidong.android.noteapp.Model.NotesLab;
 import com.gaozhidong.android.noteapp.ServicePort.Login_Interface;
 import com.gaozhidong.android.noteapp.ServiceResultEntity.LoginResult;
@@ -108,8 +109,6 @@ public class LoginActivity extends AppCompatActivity{
                                 if (loginResults != null){
                                     if (loginResults.size() > 0){
                                         NotesLab.get(LoginActivity.this).setBodyList(loginResults);
-                                    }else {
-                                        NotesLab.get(LoginActivity.this).setNullList();
                                     }
                                     Intent intent = NoteListActivity.newInstance(LoginActivity.this);
                                     startActivity(intent);

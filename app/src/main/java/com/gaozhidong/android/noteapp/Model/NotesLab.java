@@ -45,8 +45,8 @@ public class NotesLab {
     private NotesLab(Context context) {
         mContext = context.getApplicationContext();
         mBodyList = new ArrayList<>();
-        initBodyList();
-        maxId = getMaxId();
+       // initBodyList();
+
     }
 
     public static NotesLab get(Context context) {
@@ -64,14 +64,14 @@ public class NotesLab {
 
             NoteBody noteBody = NoteBody.Builder()
                     .setNoteId(1)
-                    .setAccount("高志栋")
+                    .setAccount("gaodd")
                     .setTime(DateUtils.getNowStrDate())
                     .setCalendar(Calendar.getInstance())
-                    .setText("明天就是答辩了！后天解放！")
+                    .setText(" ")
                     .create();
             mBodyList.add(noteBody);
 
-        NoteBody noteBody2 = NoteBody.Builder()
+        /*NoteBody noteBody2 = NoteBody.Builder()
                 .setNoteId(2)
                 .setAccount("高志栋")
                 .setTime(DateUtils.getNowStrDate())
@@ -123,20 +123,11 @@ public class NotesLab {
                 .setCalendar(Calendar.getInstance())
                 .setText("回去之后记得大扫除一波，不然的宿舍太脏了，住了会很不舒服的")
                 .create();
-        mBodyList.add(noteBody7);
+        mBodyList.add(noteBody7);*/
 
     }
     public List<NoteBody> getBodyList(){
         return mBodyList;
-    }
-
-    public File getPhotoFile(NoteBody noteBody){
-        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        if (externalFilesDir == null){
-            return null;
-        }
-
-        return new File(externalFilesDir, noteBody.getPhotoFilename());
     }
 
     public void addNote(NoteBody noteBody){
@@ -186,13 +177,15 @@ public class NotesLab {
                     .create();
             list.add(noteBody);
         }
-        if (list != null){
-            mBodyList = list;
+        if (list.size() != 0){
+            mBodyList.clear();
+            mBodyList.addAll(list);
+            maxId = setMaxIdAndGetIt();
         }
     }
-    public void setNullList(){
+    /*public void setNullList(){
         mBodyList.clear();
-    }
+    }*/
     public void updateNote(int noteId,String noteData,String noteTime){
         for (NoteBody noteBody1 : mBodyList){
             if (noteBody1.getNoteId() == noteId){
@@ -228,6 +221,9 @@ public class NotesLab {
                 });
     }
     public NoteBody queryNote(int noteId){
+        if (mBodyList.size() == 0){
+            Log.e(TAG, "queryNote:  000" );
+        }
         for (NoteBody noteBody: mBodyList){
             if (noteBody.getNoteId() == noteId){
                 return noteBody;
@@ -251,16 +247,6 @@ public class NotesLab {
         }
     }
 
-    private int getMaxId(){
-        NoteBody noteBody = mBodyList.get(0);
-        int max = noteBody.getNoteId();
-        for (NoteBody noteBody1 : mBodyList){
-            if (max <= noteBody1.getNoteId()){
-                max = noteBody1.getNoteId();
-            }
-        }
-        return max;
-    }
     public int setMaxIdAndGetIt(){
         int max = 0;
         if (mBodyList !=null && mBodyList.size() > 0){
@@ -273,7 +259,6 @@ public class NotesLab {
         }else {
             max = 1;
         }
-
         return max;
     }
 
@@ -286,14 +271,6 @@ public class NotesLab {
             }
         }
         return pathlist;
-        /*for (NoteBody noteBody : mBodyList){
-            if (noteBody.getNoteId() == id){
-                File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-                String path = externalFilesDir + File.separator + noteBody.getPhotoFilename();
-                pathlist.add(path);
-            }
-        }
-        return pathlist;*/
     }
 
     public List<Pictures> getPics(int id){
@@ -312,9 +289,7 @@ public class NotesLab {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<RegisterResult>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
+                    public void onCompleted() {}
 
                     @Override
                     public void onError(Throwable e) {

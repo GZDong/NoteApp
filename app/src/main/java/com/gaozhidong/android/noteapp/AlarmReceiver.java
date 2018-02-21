@@ -37,6 +37,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
             NoteBody noteBody = NotesLab.get(context).queryNote(noteId);
             //发送通知
+            Log.e(TAG, "onReceive: " + noteBody.getNoteId() + noteBody.getText());
             PendingIntent pi = PendingIntent.getActivity(context,0,intent2,PendingIntent.FLAG_UPDATE_CURRENT);
 
             NotificationManager manager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

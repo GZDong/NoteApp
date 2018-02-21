@@ -67,6 +67,7 @@ public class AlarmService extends Service {
         Intent intent2 = new Intent();
         intent2.setAction("com.gaozhidong.android.RING");
         intent2.putExtra("noteId", noteId);
+        Log.e(TAG, "onStartCommand: 为 " + noteId + "设置闹钟");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent2, 0);
 
        /* Intent intent3 = new Intent(this,AlarmReceiver.class);

@@ -238,7 +238,6 @@ public class ContentActivity extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    Log.e(TAG, "onTextChanged: " + charSequence.toString() );
                     if (!charSequence.toString().equals(oldString)){
                         newString = charSequence.toString();
                     }
