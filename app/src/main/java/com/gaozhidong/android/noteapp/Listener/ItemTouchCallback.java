@@ -93,11 +93,12 @@ public class ItemTouchCallback extends ItemTouchHelper.Callback {
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
         int adapterPosition = viewHolder.getAdapterPosition();  //获得被侧滑的子项位置
-       // NoteBody noteBody = mNoteAdaper.getDataList().get(adapterPosition);
-       // LogUtil.e("test","被移除的noteId" + noteBody.getNoteId());
+        NoteBody noteBody = mNoteAdaper.getDataList().get(adapterPosition);
+        LogUtil.e("test","被移除的noteId" + noteBody.getNoteId());
         mNoteAdaper.notifyItemRemoved(adapterPosition);  //视图清除
         mNoteAdaper.getDataList().remove(adapterPosition);  //数据清除
         NotesLab.get(MyApplication.getContext()).printList();
+        NotesLab.get(MyApplication.getContext()).deleteNote(noteBody.getNoteId());
     }
 
     /**

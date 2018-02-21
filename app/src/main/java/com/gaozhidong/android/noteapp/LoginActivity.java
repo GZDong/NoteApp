@@ -1,6 +1,7 @@
 package com.gaozhidong.android.noteapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +25,8 @@ import com.gaozhidong.android.noteapp.Util.InterfaceConst;
 import com.google.gson.Gson;
 
 import org.litepal.tablemanager.Connector;
+
+import java.util.List;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -60,23 +63,35 @@ public class LoginActivity extends AppCompatActivity{
         mSignBtn = (Button) findViewById(R.id.sign_in_button);
         mAccountTV = (AutoCompleteTextView) findViewById(R.id.account);
         mPasswordET = (EditText) findViewById(R.id.password);
+
+        SharedPreferences pref = getSharedPreferences("data",MODE_PRIVATE);
+        String account = pref.getString("account","");
+        String password = pref.getString("password","");
+        mAccountTV.setText(account);
+        mAccountTV.setSelection(mAccountTV.getText().length());
+        mPasswordET.setText(password);
     }
     void initAction(){
         mSignBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-               /* Log.e(TAG, "onClick: " + mAccountTV.getText() + "\n" + mPasswordET.getText() );
+                SharedPreferences.Editor editor = getSharedPreferences("data",MODE_PRIVATE).edit();
+                editor.putString("account",mAccountTV.getText().toString());
+                editor.putString("password",mPasswordET.getText().toString());
+                editor.apply();
+
+                Log.e(TAG, "onClick: " + mAccountTV.getText() + "\n" + mPasswordET.getText() );
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(InterfaceConst.HOST)
                         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                         .addConverterFactory(GsonConverterFactory.create())
                         .build();
                 Login_Interface login_interface = retrofit.create(Login_Interface.class);
-                Observable<LoginResult> observable = login_interface.getObservable(mAccountTV.getText().toString(),mPasswordET.getText().toString());
+                Observable<List<LoginResult> > observable = login_interface.getObservable(mAccountTV.getText().toString(),mPasswordET.getText().toString());
                 observable.subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<LoginResult>() {
+                        .subscribe(new Subscriber<List<LoginResult> >() {
                             @Override
                             public void onCompleted() {
                                 Log.e(TAG, "onCompleted: " );
@@ -88,15 +103,22 @@ public class LoginActivity extends AppCompatActivity{
                             }
 
                             @Override
-                            public void onNext(LoginResult loginResult) {
+                            public void onNext(List<LoginResult>  loginResults) {
                                 Log.e(TAG, "onNext: " );
-                                if (loginResult != null){
-                                    NotesLab.get(LoginActivity.this).setBodyList(loginResult);
+                                if (loginResults != null){
+                                    if (loginResults.size() > 0){
+                                        NotesLab.get(LoginActivity.this).setBodyList(loginResults);
+                                    }else {
+                                        NotesLab.get(LoginActivity.this).setNullList();
+                                    }
+                                    Intent intent = NoteListActivity.newInstance(LoginActivity.this);
+                                    startActivity(intent);
+                                }else {
+                                    Toast.makeText(LoginActivity.this,"账号或密码错误",Toast.LENGTH_LONG).show();
                                 }
                             }
-                        });*/
-                Intent intent = NoteListActivity.newInstance(LoginActivity.this);
-                startActivity(intent);
+                        });
+
             }
         });
     }

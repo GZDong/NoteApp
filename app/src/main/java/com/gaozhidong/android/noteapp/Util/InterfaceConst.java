@@ -5,7 +5,7 @@ package com.gaozhidong.android.noteapp.Util;
  */
 
 public class InterfaceConst {
-    public static final String HOST = "http://192.168.43.77/NoteServer/";
+    public static final String HOST = "http://192.168.0.101:8080/NoteServer/";
     public static final String SIGN = "login";
     public static final String REGISTER = "register";
     public static final String ADD = "addnote";

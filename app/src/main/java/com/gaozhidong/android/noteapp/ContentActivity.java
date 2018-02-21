@@ -131,11 +131,13 @@ public class ContentActivity extends AppCompatActivity {
         //private ImageView mImageView;
         private TextView textTime;
         private EditText text;
-        private String oldString;
+        private String oldString = "";
+        private String newString = "";
         private RecyclerView mRecyclerView;
         private PicListAdapter mPicListAdapter;
         private List<String> mPath;
         private int noteid;
+        private boolean fflag = false;
 
         public PlaceholderFragment() {
         }
@@ -164,6 +166,8 @@ public class ContentActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
+
+
             View rootView = inflater.inflate(R.layout.fragment_content, container, false);
             textTime = (TextView) rootView.findViewById(R.id.text_title);
             text = (EditText) rootView.findViewById(R.id.input_text);
@@ -172,6 +176,7 @@ public class ContentActivity extends AppCompatActivity {
             text.setText(mNoteBody.getText());
             text.setSelection(text.getText().length());
             oldString = mNoteBody.getText();
+            newString = mNoteBody.getText();
             fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
             mPath = NotesLab.get(getActivity()).getPicPaths(noteid);
             mRecyclerView = (RecyclerView) rootView.findViewById(R.id.picture_list);
@@ -225,6 +230,7 @@ public class ContentActivity extends AppCompatActivity {
             });
 
             text.addTextChangedListener(new TextWatcher() {
+
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -232,8 +238,9 @@ public class ContentActivity extends AppCompatActivity {
 
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    if (!charSequence.toString().equals(oldString)) {
-                        NotesLab.get(getActivity()).updateNote(mNoteBody.getNoteId(),charSequence.toString(), DateUtils.getNowStrDate());
+                    Log.e(TAG, "onTextChanged: " + charSequence.toString() );
+                    if (!charSequence.toString().equals(oldString)){
+                        newString = charSequence.toString();
                     }
                 }
 
@@ -281,6 +288,10 @@ public class ContentActivity extends AppCompatActivity {
                 return true;
             }
             if (id == android.R.id.home){
+                fflag = true;
+                if (!newString.equals(oldString)) {
+                    NotesLab.get(getActivity()).updateNote(mNoteBody.getNoteId(),newString, DateUtils.getNowStrDate());
+                }
                 Intent intent = new Intent();
                 getActivity().setResult(1,intent);
                 getActivity().finish();
@@ -298,6 +309,23 @@ public class ContentActivity extends AppCompatActivity {
             }
             return super.onOptionsItemSelected(item);
         }
+
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            if (fflag == false &&newString!=null &&oldString!=null&& !newString.equals(oldString)) {
+                Log.e(TAG, "onPause: " );
+                NotesLab.get(getActivity()).updateNote(mNoteBody.getNoteId(),newString, DateUtils.getNowStrDate());
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent();
+        setResult(1,intent);
+        finish();
     }
 
     /**

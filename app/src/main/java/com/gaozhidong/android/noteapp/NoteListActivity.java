@@ -11,6 +11,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -38,6 +39,9 @@ public class NoteListActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private NoteAdaper mNoteAdaper;
     private List<NoteBody> mBodyList;
+    private BroadcastReceiver mReceiver1;
+    private BroadcastReceiver mReceiver2;
+    private static String TAG = "test";
 
     public static Intent newInstance(Context context){
         return new Intent(context,NoteListActivity.class);
@@ -53,18 +57,18 @@ public class NoteListActivity extends AppCompatActivity
 
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.gaozhidong.android.Color");
-        BroadcastReceiver receiver = new BroadcastReceiver() {
+        mReceiver1= new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 NotesLab.get(context).updateFlag(intent.getIntExtra("noteId",1),1);
                 mNoteAdaper.notifyDataSetChanged();
             }
         };
-        registerReceiver(receiver,intentFilter);
+        registerReceiver(mReceiver1,intentFilter);
 
         IntentFilter intentFilter1 = new IntentFilter();
         intentFilter1.addAction("com.gaozhidong.android.NoColor");
-        BroadcastReceiver receiver1 = new BroadcastReceiver() {
+        mReceiver2 = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 LogUtil.e("test","接收到清空图标的广播了" + intent.getIntExtra("noteId",1));
@@ -73,7 +77,7 @@ public class NoteListActivity extends AppCompatActivity
                 mNoteAdaper.notifyDataSetChanged();
             }
         };
-        registerReceiver(receiver1,intentFilter1);
+        registerReceiver(mReceiver2,intentFilter1);
 
         mBodyList = NotesLab.get(this).getBodyList();
         mRecyclerView = (RecyclerView) findViewById(R.id.note_recycler_view);
@@ -101,14 +105,15 @@ public class NoteListActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 int noteid = NotesLab.get(NoteListActivity.this).setMaxIdAndGetIt();
-              //  LogUtil.e("test","此时一共有"+mBodyList.size() + "为新便签起的id：" + noteid);
+                LogUtil.e("test","此时一共有"+mBodyList.size() + "为新便签起的id：" + noteid);
                 NoteBody noteBody = NoteBody.Builder()
                         .setNoteId(noteid)
                         .setText("")
                         .setTime(DateUtils.getNowStrDate())
-                        .setAccount("gaozhidong")
+                        .setAccount(getSharedPreferences("data",MODE_PRIVATE).getString("account",""))
                         .setCalendar(Calendar.getInstance())
                         .create();
+                Log.e(TAG, "onClick: " + noteBody.getNoteId() + noteBody.getAccount());
                 NotesLab.get(NoteListActivity.this).addNote(noteBody);
 
                 mNoteAdaper.notifyDataSetChanged();
@@ -203,10 +208,18 @@ public class NoteListActivity extends AppCompatActivity
         switch (requestCode){
             case 1:
                 if (resultCode == 1){
+                    Log.e(TAG, "onActivityResult: " );
                     mNoteAdaper.notifyDataSetChanged();
                 }
                 break;
             default:
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver1);
+        unregisterReceiver(mReceiver2);
     }
 }

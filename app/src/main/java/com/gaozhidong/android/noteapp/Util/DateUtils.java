@@ -46,6 +46,7 @@ public class DateUtils {
         if (hour<10){
             midStr1 = "0";
         }
-        return year + "年" + month + "月" + day + "日 " +midStr1 + hour + ":"+ midStr2 + minute;
+        return year + "-" + month + "-" + day + " " +midStr1 + hour + ":"+ midStr2 + minute;
+      //  return year + "年" + month + "月" + day + "日 " +midStr1 + hour + ":"+ midStr2 + minute;
     }
 }

@@ -1,6 +1,5 @@
 package com.gaozhidong.android.noteapp.ServiceResultEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,32 +8,47 @@ import java.util.List;
 
 public class LoginResult {
 
-    private List<Body> Bodies;
+    /**
+     * noteid : 1
+     * notedata : i am gzd
+     * notetime : 2017-9-16
+     * noteaccount : gaozhidong
+     */
 
-    public class Body{
-        String noteid;
-        String notedata;
-        String notetime;
-        String noteaccount;
+    private String noteid;
+    private String notedata;
+    private String notetime;
+    private String noteaccount;
 
-        public String getNoteaccount() {
-            return noteaccount;
-        }
-
-        public String getNotedata() {
-            return notedata;
-        }
-
-        public String getNoteid() {
-            return noteid;
-        }
-
-        public String getNotetime() {
-            return notetime;
-        }
+    public String getNoteid() {
+        return noteid;
     }
 
-    public List<Body> getBodies() {
-        return Bodies;
+    public void setNoteid(String noteid) {
+        this.noteid = noteid;
+    }
+
+    public String getNotedata() {
+        return notedata;
+    }
+
+    public void setNotedata(String notedata) {
+        this.notedata = notedata;
+    }
+
+    public String getNotetime() {
+        return notetime;
+    }
+
+    public void setNotetime(String notetime) {
+        this.notetime = notetime;
+    }
+
+    public String getNoteaccount() {
+        return noteaccount;
+    }
+
+    public void setNoteaccount(String noteaccount) {
+        this.noteaccount = noteaccount;
     }
 }
