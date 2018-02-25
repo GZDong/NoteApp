@@ -32,9 +32,12 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="modify">修改</string>
     <string name="hint">请输入便签内容</string>
-    <string name="sort_str">排序</string>
+    <string name="sort_str">垃圾桶</string>
     <string name="send_note">%1$s 分享了一条便签给你\n时间：%2$s \n内容：%3$s </string>
     <string name="send_note_subject">来自黑白便签APP</string>
     <string name="send_note_choose">分享便签</string>
     <string name="search_hint">请输入关键字</string>
+    <string name="rubbish_label">垃圾箱</string>
+    <string name="menu_delete">全部删除</string>
+    <string name="menu_recover">全部恢复</string>
 </resources>

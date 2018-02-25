@@ -169,7 +169,8 @@ public class NoteListActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.item_sort) {
-            return true;
+            Intent intent = new Intent(NoteListActivity.this,RubbishActivity.class);
+            startActivityForResult(intent,1);
         }
         if (id == R.id.item_search){
             Intent intent = new Intent(NoteListActivity.this,SortActivity.class);

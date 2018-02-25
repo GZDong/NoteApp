@@ -41,12 +41,14 @@ public class NotesLab {
     private List<NoteBody> mBodyList;
     private int maxId;
     public static final String TAG = "Lab";
+    private List<NoteBody> mRcycleList;
 
     private NotesLab(Context context) {
         mContext = context.getApplicationContext();
         mBodyList = new ArrayList<>();
+        mRcycleList = new ArrayList<>();
        // initBodyList();
-
+        initRList();
     }
 
     public static NotesLab get(Context context) {
@@ -313,5 +315,37 @@ public class NotesLab {
             }
         }
         return list;
+    }
+
+    private void initRList(){
+        mRcycleList = DataSupport.findAll(NoteBody.class);
+    }
+
+    public void deleteRList(int noteid){
+        for (NoteBody body : mRcycleList){
+            if (body.getNoteId() == noteid){
+                DataSupport.deleteAll(NoteBody.class, "mNoteId = ? ", noteid + "");
+                mRcycleList.remove(body);
+                return;
+            }
+        }
+    }
+
+    public List<NoteBody> getRcycleList() {
+        return mRcycleList;
+    }
+
+    public void refreshRList(){
+        mRcycleList.clear();
+        mRcycleList = DataSupport.findAll(NoteBody.class);
+    }
+    public NoteBody getNoteFromRList(int noteid){
+        for (NoteBody body:mRcycleList){
+            if (body.getNoteId() == noteid){
+                deleteRList(noteid);
+                return body;
+            }
+        }
+        return null;
     }
 }

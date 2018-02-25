@@ -58,8 +58,7 @@
         <service
             android:name=".AlarmService"
             android:enabled="true"
-            android:permission="1000"
-            >
+            android:permission="1000">
         </service>
 
         <activity
@@ -73,6 +72,10 @@
             android:parentActivityName=".LoginActivity">
         </activity>
         <activity android:name=".PicShowActivity">
+        </activity>
+        <activity android:name=".RubbishActivity"
+            android:label="@string/rubbish_label"
+            android:parentActivityName=".NoteListActivity">
         </activity>
     </application>
 
