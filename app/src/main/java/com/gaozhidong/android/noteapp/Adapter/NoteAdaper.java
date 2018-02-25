@@ -19,6 +19,7 @@ import com.gaozhidong.android.noteapp.MyView.NineGridImageView;
 import com.gaozhidong.android.noteapp.NoteListActivity;
 import com.gaozhidong.android.noteapp.PicShowActivity;
 import com.gaozhidong.android.noteapp.R;
+import com.gaozhidong.android.noteapp.SortActivity;
 import com.gaozhidong.android.noteapp.Util.LogUtil;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
 
     private Context mContext;
     public List<NoteBody> mList;
+    private int activityTag;
 
     public NoteAdaper(Context context, List<NoteBody> list) {
         mContext = context;
@@ -113,8 +115,14 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
                     Intent intent = ContentActivity.newInstance(mContext);
                     // LogUtil.e("test","put " + noteId);
                     intent.putExtra("noteId",noteId);
-                    NoteListActivity noteListActivity = (NoteListActivity) mContext;
-                    noteListActivity.startActivityForResult(intent,1);
+                    if (activityTag == 1){
+                        NoteListActivity noteListActivity = (NoteListActivity) mContext;
+                        noteListActivity.startActivityForResult(intent,1);
+                    }
+                    if (activityTag == 2){
+                        SortActivity sortActivity = (SortActivity) mContext;
+                        sortActivity.startActivityForResult(intent,1);
+                    }
                 }
             });
         }
@@ -125,5 +133,9 @@ public class NoteAdaper extends RecyclerView.Adapter<NoteAdaper.NoteViewHodler> 
         public int getNoteId() {
             return noteId;
         }
+    }
+
+    public void setActivityTag(int activityTag) {
+        this.activityTag = activityTag;
     }
 }

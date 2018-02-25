@@ -302,4 +302,16 @@ public class NotesLab {
                     }
                 });
     }
+
+    public List<NoteBody> searchNotes(String s){
+        List<NoteBody> list = new ArrayList<>();
+        if (mBodyList.size() != 0){
+            for (NoteBody body : mBodyList){
+                if (body.getText().contains(s)){
+                    list.add(body);
+                }
+            }
+        }
+        return list;
+    }
 }

@@ -36,4 +36,5 @@
     <string name="send_note">%1$s 分享了一条便签给你\n时间：%2$s \n内容：%3$s </string>
     <string name="send_note_subject">来自黑白便签APP</string>
     <string name="send_note_choose">分享便签</string>
+    <string name="search_hint">请输入关键字</string>
 </resources>

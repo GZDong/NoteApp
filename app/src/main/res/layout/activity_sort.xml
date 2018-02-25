@@ -9,11 +9,14 @@
     tools:context="com.gaozhidong.android.noteapp.SortActivity">
 
     <SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:queryHint="@string/search_hint"
         />
 
-    <ListView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/search_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

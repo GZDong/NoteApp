@@ -83,6 +83,7 @@ public class NoteListActivity extends AppCompatActivity
         mRecyclerView = (RecyclerView) findViewById(R.id.note_recycler_view);
         mNoteAdaper = new NoteAdaper(this,mBodyList);
         LinearLayoutManager lm = new LinearLayoutManager(this);
+        mNoteAdaper.setActivityTag(1);
         mRecyclerView.setLayoutManager(lm);
         mRecyclerView.setAdapter(mNoteAdaper);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
@@ -172,7 +173,7 @@ public class NoteListActivity extends AppCompatActivity
         }
         if (id == R.id.item_search){
             Intent intent = new Intent(NoteListActivity.this,SortActivity.class);
-            startActivity(intent);
+            startActivityForResult(intent,1);
         }
 
         return super.onOptionsItemSelected(item);
